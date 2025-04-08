@@ -1,0 +1,38 @@
+using System;
+namespace Lab1
+{
+    public class TimerClass
+    {
+        private int seconds_;
+        private Thread thread;
+        public TimerClass(int miliseconds)
+        {
+            this.seconds = miliseconds * 1000;
+            this.thread = new Thread(new ThreadStart(Method));
+            this.thread.Start();
+        }
+        public void Method()
+        {
+            while (true)
+            {
+                Console.WriteLine($"Method({Thread.CurrentThread.GetHashCode()})  is running...");
+                Thread.Sleep(seconds);
+            }
+        }
+        public int seconds
+        {
+            get { return seconds_; }
+            set { seconds_ = value; }
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            TimerClass timerClass1 = new TimerClass(5);
+            TimerClass timerClass2 = new TimerClass(5);
+            TimerClass timerClass3 = new TimerClass(10);
+
+        }
+    }
+}
