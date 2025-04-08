@@ -1,0 +1,56 @@
+using System;
+namespace Lab1
+{
+    static class ExtensionMethod
+    {
+        public static void Print(this int[] array)
+        {
+            Console.WriteLine("Масив що задовольняє умовi:");
+            foreach (int x in array) Console.Write(x + " ");
+            Console.WriteLine();
+        }
+    }
+    class Program
+    {
+        public delegate int[] SortDel(int[] array, int k);
+
+        static public int[] Sort(int[] array, int k)
+        {
+            int count = 0; 
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] % k == 0) count++;
+            }
+
+            int[] sortAr = new int[count];
+            count = 0;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] % k == 0)
+                {
+                    sortAr[count] = array[i];
+                    count++;
+                }
+            }
+            return sortAr;
+        }
+        static void Main(string[] args)
+        {
+            SortDel sortLibraryMethods = (int[] array, int k) => { return (array.Where(num => num % k == 0)).ToArray(); };
+            SortDel sortWithoutLibraryMethods = new SortDel(Sort);
+
+            Console.WriteLine("Введiть елементи масиву через пробiл:");
+
+            int[] array = Array.ConvertAll((Console.ReadLine().Split(' ')).ToArray(), int.Parse);
+
+            Console.WriteLine("Введiть число к, якому мають бути кратнi елементи масиву:");
+
+            int k = int.Parse(Console.ReadLine());
+
+            sortLibraryMethods(array, k).Print();
+            sortWithoutLibraryMethods(array, k).Print();
+        }
+    }
+}
