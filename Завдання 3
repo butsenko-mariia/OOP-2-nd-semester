@@ -1,0 +1,49 @@
+using System;
+using System.Runtime.CompilerServices;
+namespace Lab1
+{
+    class Program
+    {
+        public delegate double CurrentMemberOfTheRow(int n);
+        static double SeriesSum(CurrentMemberOfTheRow currentMemberOfTheRow, double eps)
+        {
+           
+            double previousMember = currentMemberOfTheRow(0), currentMember = currentMemberOfTheRow(1), sum = previousMember+currentMember;
+            int n = 2;
+
+            while (Math.Abs(currentMember - previousMember) > eps)
+            {
+                previousMember = currentMember;
+                currentMember = currentMemberOfTheRow(n);
+                sum += currentMember;
+                n++;
+            }
+                        
+            return sum;
+        }
+
+        static double Factorial(long n)
+        {
+            double factorial = 1;
+                for (int i = 2; i <= n; i++)
+                {
+                    factorial *= i;
+                }
+                return factorial;
+        }
+        static void Main(string[] args)
+        {
+            double eps = 0.00000000000000000000000000000001;
+
+            CurrentMemberOfTheRow function1 = delegate (int n) { return 1/Math.Pow(2, n); };
+            CurrentMemberOfTheRow function2 = delegate (int n) { if (n == 0) return 0; else return 1/Factorial(n); };
+            CurrentMemberOfTheRow function3 = delegate (int n) { return Math.Pow(-1, n+1) * function1(n); };
+
+            Console.WriteLine(SeriesSum(function1, eps)); 
+            Console.WriteLine(SeriesSum(function2, eps)); 
+            Console.WriteLine(SeriesSum(function3, eps));
+
+
+        }
+    }
+}
