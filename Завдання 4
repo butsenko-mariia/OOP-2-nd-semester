@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+namespace Lab1
+{
+    class Program
+    {
+        public delegate double Deleg(double x);
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Вводьте рядки послiдовно один за одним.\r\n" +
+                "Поки вони матимуть вигляд 0 x чи 1 x чи 2 x\r\"" +
+                "n(тобто, цифра вiд 0 до 2, а пiля неї запис конкретного дiйсного числа),\r\n" +
+                "програма обчислюватиме одну з трьох функц?й\r\n       " +
+                " 0 -- sqrt(abs(x))\r\n        " +
+                "1 -- x^3 (iнакше кажучи, x*x*x)\r\n        " +
+                "2 -- x + 3,5\r\n" +
+                "(згiдно цифри на початку) i виводитиме результат.\r\n\r\n" +
+                "Якщо вхiдний рядок не задовольнятиме цей формат, програма завершить роботу.");
+            
+            Deleg del0 = delegate (double x) { return Math.Sqrt(Math.Abs(x)); };
+            Deleg del1 = delegate (double x) { return Math.Pow(x, 3); };
+            Deleg del2 = delegate (double x) { return x + 3.5; };
+
+            Deleg[] delegates = new Deleg[] { del0, del1, del2 };
+
+            while (true)
+            {
+                try
+                {
+                    string[] inp = Console.ReadLine().Split(' ');
+                    Console.WriteLine(delegates[int.Parse(inp[0])](double.Parse(inp[1])));
+
+                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"На жаль сталась помилка ({e.Message}), тому робота програми завершена. Всього вам найкращого! ");
+                }
+            }
+        }
+    }
+}
